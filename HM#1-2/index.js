@@ -1,6 +1,8 @@
-let money = +prompt("Ваш бюджет на месяц?", "");
-let time  = prompt("Введите дату в формате YYYY-MM-DD", "");
-let appData = {
+'use strict'
+
+let money = +prompt("Ваш бюджет на месяц?", ""),
+time  = prompt("Введите дату в формате YYYY-MM-DD", ""),
+appData = {
     budget           : money,
     timeData         : time,
     expenses         : {},
@@ -11,7 +13,8 @@ let appData = {
 
 
 
-/*for (let i = 0; i < 2; i++) {
+/*
+for (let i = 0; i < 2; i++) {
     
     let a = prompt("Введите обязательную статью расходов", "");
     let b = +prompt("Во сколько обойдеться?", "");
@@ -22,9 +25,11 @@ let appData = {
     } else {
         i--;
     }
-}*/
+}
+*/
 
-/*let i = 1;
+/*
+let i = 1;
 while (i <= 2) {
     let a = prompt("Введите обязательную статью расходов", "");
     let b = +prompt("Во сколько обойдеться?", ""); 
@@ -36,7 +41,8 @@ while (i <= 2) {
         i--;
     }
     i++;
-}*/
+}
+*/
 
 let i = 1;
 do {
