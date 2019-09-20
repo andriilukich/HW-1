@@ -1,11 +1,13 @@
-'use strict'
+'use strict';
 
 let money, time;
 
 function start() {
     money = +prompt("Ваш бюджет на месяц?", "");
 
-    while ( isNaN(money) || money == '' || money == null || !isFinite(money) )  {
+    while ( isNaN(money) || money == '' ||
+        money == null || !isFinite(money) )  {
+
         money = +prompt("Ваш бюджет на месяц?", "");
     }
 
@@ -27,8 +29,11 @@ let appData = {
             let a = prompt("Введите обязательную статью расходов", "");
             let b = +prompt("Во сколько обойдеться?", "");
         
-            if (typeof(a) === 'string' && (typeof(a) != null && typeof(b) != null && a != '' && b != '' && a.length < 50)) {
-                console.log ('done');
+            if (typeof(a) === 'string' &&
+                (typeof(a) != null && typeof(b) != null &&
+                a != '' && b != '' && a.length < 50)) {
+
+                console.log('done');
                 appData.expenses[a] = b;
             } else {
                 i--;
@@ -54,13 +59,17 @@ let appData = {
         if (appData.saving) {
             let save = +prompt('Kakova summa nakopleni?','');
     
-            while ( isNaN(save) || !isFinite(save) || save == '' || save == null) {
+            while ( isNaN(save) || !isFinite(save) ||
+                save == '' || save == null) {
+
                 save = +prompt('Kakova summa nakopleni?','');
             }
     
             let pers = +prompt('Kakov prosent?', '');
     
-            while ( isNaN(pers) || !isFinite(pers) || save == '' || save == null ) {
+            while ( isNaN(pers) || !isFinite(pers) ||
+                save == '' || save == null ) {
+
                 pers = +prompt('Kakov prosent?', '');
             }
     
@@ -110,5 +119,21 @@ let appData = {
         }
 
         appData.income.sort();
+
+        let incomeList = 'Способы доп. заработка:\n';
+        appData.income.forEach( function(item, i) {
+            incomeList += ++i + ': ' + item + '\n';
+        });
+
+        alert(incomeList);
     }
 };
+
+console.log('Наша программа включает в себя данные:');
+for (let key in appData) {
+    ( typeof(appData[key]) != 'function') ? 
+    console.log('Параметр: ' + key + ' его значение - ' +  appData[key]) :
+    console.log('Дополнительные функции:' + key);
+}
+
+console.log();
