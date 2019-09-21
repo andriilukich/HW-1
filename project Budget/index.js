@@ -136,4 +136,8 @@ for (let key in appData) {
     console.log('Дополнительные функции:' + key);
 }
 
-console.log();
+let boxId = document.getElementById('box'),
+    boxClasses = document.getElementsByClassName('box');
+
+console.log(boxId);
+console.log(boxClasses);
