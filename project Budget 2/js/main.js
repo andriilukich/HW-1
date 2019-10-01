@@ -1,60 +1,144 @@
 'use strict';
-// Получить кнопку "Начать расчет" через id
-const calculation = document.getElementById('start'),
 
+let btnStart = document.getElementById('start'),
+  budgetValue = document.getElementsByClassName('budget-value')[0],
+  dayBudgetValue = document.getElementsByClassName('daybudget-value')[0],
+  levelValue = document.getElementsByClassName('level-value')[0],
+  expensesValue = document.getElementsByClassName('expenses-value')[0],
+  optionalExpensesValue = document.getElementsByClassName('optionalexpenses-value')[0],
+  incomeValue = document.getElementsByClassName('income-value')[0],
+  monthSavingsValue = document.getElementsByClassName('monthsavings-value')[0],
+  yearSavingsValue = document.getElementsByClassName('yearsavings-value')[0],
 
-// Получить все блоки в правой части программы через классы (которые имеют класс название-value, начиная с <div class="budget-value"></div> и заканчивая <div class="yearsavings-value"></div>)
-/*
-  budget = document.querySelector('.budget-value'),
-  daybudget = document.querySelector('.daybudget-value'),
-  level = document.querySelector('.level-value'),
-  expenses = document.querySelector('.expenses-value'),
-  optionalexpenses = document.querySelector('.optionalexpenses-value'),
-  income = document.querySelector('.income-value'),
-  monthsavings = document.querySelector('.monthsavings-value'),
-  yearsavings = document.querySelector('.yearsavings-value'),
-*/
-/*
-  values = document.querySelectorAll('[class*=-value]:not(.year-value):not(.month-value):not(.day-value)'),
-*/
-  values = document.querySelectorAll('.result-table [class*=-value]'),
-// Получить поля(input) c обязательными расходами через класс. (class=”expenses-item”)
-  inputExpenses = document.querySelectorAll('.expenses-item'),
-// Получить поля для ввода необязательных расходов (optionalexpenses-item) при помощи querySelectorAll
-  inputOptionalExpenses = document.querySelectorAll('.optionalexpenses-item'),
-// Получить кнопки “Утвердить” и “Рассчитать” через Tag, каждую в своей переменной.
-/*
-  expensesBtn = document.getElementsByTagName('button')[0],
-  optionalExpensesBtn = document.getElementsByTagName('button')[1],
-  countBudgetBtn = document.getElementsByTagName('button')[2]; 
-*/
-  expensesBtn = document.querySelector('button'),
-  optionalExpensesBtn = document.querySelectorAll('button')[1],
-  countBudgetBtn = document.querySelectorAll('button')[2],
-// Получить оставшиеся поля через querySelector (статьи возможного дохода, чекбокс, сумма, процент, год, месяц, день)
-  chooseIncome = document.querySelector('.choose-income'),
-  savings = document.querySelector('.savings'),
-  chooseSum = document.querySelector('.choose-sum'),
-  choosePercent = document.querySelector('.choose-percent'),
+  expensesItems = document.getElementsByClassName('expenses-item'),
+  btnExpenses = document.getElementsByTagName('button')[0],
+  btnOptionalExpenses = document.getElementsByTagName('button')[1],
+  btnCountBudget = document.getElementsByTagName('button')[2],
+  optionalExpenses = document.querySelectorAll('.optionalexpenses-item'),
+  incomeItems = document.querySelector('.choose-income'),
+  checkSavings = document.querySelector('#savings'),
+  sumValue = document.querySelector('.choose-sum'),
+  percentValue = document.querySelector('.choose-percent'),
   yearValue = document.querySelector('.year-value'),
   monthValue = document.querySelector('.month-value'),
   dayValue = document.querySelector('.day-value');
 
-  // 1
-console.log('calculation: ', calculation);
-  // 2
-console.log('values: ', values);
-  // 3
-console.log('inputExpenses: ', inputExpenses);
-  // 4
-console.log('expensesBtn: ', expensesBtn);
-console.log('optionalExpensesBtn: ', optionalExpensesBtn);
-console.log('countBudgetBtn: ', countBudgetBtn);
-  // 5
-console.log('chooseIncome: ', chooseIncome);
-console.log('savings: ', savings);
-console.log('chooseSum: ', chooseSum);
-console.log('choosePercent: ', choosePercent);
-console.log('yearValue: ', yearValue);
-console.log('monthValue: ', monthValue);
-console.log('dayValue: ', dayValue);
+let money, time;
+
+btnExpenses.disabled = true;
+btnOptionalExpenses.disabled = true;
+btnCountBudget.disabled = true;
+
+btnStart.addEventListener('click', function() {
+  time  = prompt('Введите дату в формате YYYY-MM-DD', '');
+  money = +prompt('Ваш бюджет на месяц?', '');
+
+  while ( isNaN(money) || money == '' || money == null )  {
+    money = +prompt('Ваш бюджет на месяц?', '');
+  }
+  appData.budget = money;
+  appData.timeData = time;
+  budgetValue.textContent = money.toFixed();
+  yearValue.value = new Date(Date.parse(time)).getFullYear();
+  monthValue.value = new Date(Date.parse(time)).getMonth() + 1;
+  dayValue.value = new Date(Date.parse(time)).getDate();
+
+  btnExpenses.disabled = false;
+  btnOptionalExpenses.disabled = false;
+});
+
+btnExpenses.addEventListener('click', function() {
+  let sum = 0;
+
+  for (let i = 0; i < expensesItems.length; i++) {
+    
+    let a = expensesItems[i].value;
+    let b = expensesItems[++i].value;
+
+    if ( (typeof(a)) != null && (typeof(b)) != null && a != '' && b != '' && a.length < 50 ) {
+        appData.expenses[a] = b;
+        sum += +b;
+    } else {
+        i--;
+    }
+  }
+  expensesValue.textContent = sum;
+  appData.surelyExpenses = sum;
+  btnCountBudget.disabled = false;
+});
+
+btnOptionalExpenses.addEventListener('click', function() {
+  for (let i = 0; i < optionalExpenses.length; i++) {
+    let optExpen = optionalExpenses[i].value;
+    appData.optionalExpenses[i] = optExpen;
+    optionalExpensesValue.textContent += appData.optionalExpenses[i] + ' ';
+  }
+});
+
+btnCountBudget.addEventListener('click', function() {
+  if (appData.budget != undefined) {
+    appData.moneyPerDay = ( (appData.budget - appData.surelyExpenses) / 30).toFixed();
+    dayBudgetValue.textContent = appData.moneyPerDay;
+
+    if (appData.moneyPerDay <= 100) {
+      levelValue.textContent = 'Минимальный уровень достатка';
+    } else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
+      levelValue.textContent = 'Средний уровень достатка';
+    } else if (appData.moneyPerDay > 2000) {
+      levelValue.textContent = 'Высокий уровень достатка';
+    } else {
+      levelValue.textContent = 'Произошла ошибка.';
+    }
+  } else {
+    dayBudgetValue.textContent = 'Произошла ошибка';
+  }
+});
+
+incomeItems.addEventListener('input', function() {
+  let item = incomeItems.value;
+  appData.income = item.split(', ');
+  incomeValue.textContent = appData.income.join(', ');
+});
+
+checkSavings.addEventListener('click', function() {
+  if (appData.saving == true) {
+    appData.saving = false;
+  } else {
+    appData.saving = true;
+  }
+});
+
+sumValue.addEventListener('input', function() {
+  if (appData.saving == true) {
+    let sum = +sumValue.value,
+      pers = +percentValue.value;
+
+    appData.monthIncome = sum / 100 / 12 * pers;
+    appData.yearIncome = sum / 100 * pers;
+
+    yearSavingsValue.textContent = appData.monthIncome.toFixed(1);
+    monthSavingsValue.textContent = appData.yearIncome.toFixed(1);
+  }
+});
+
+percentValue.addEventListener('input', function() {
+  if (appData.saving == true) {
+    let sum = +sumValue.value,
+      pers = +percentValue.value;
+
+    appData.monthIncome = sum / 100 / 12 * pers;
+    appData.yearIncome = sum / 100 * pers;
+
+    yearSavingsValue.textContent = appData.monthIncome.toFixed(1);
+    monthSavingsValue.textContent = appData.yearIncome.toFixed(1);
+  }
+}); 
+
+let appData = {
+    budget           : money,
+    timeData         : time,
+    expenses         : {},
+    optionalExpenses : {},
+    income           : [],
+    saving           : false
+};
