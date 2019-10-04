@@ -84,4 +84,33 @@ window.addEventListener('DOMContentLoaded', function(){
 	}
 
 	setClock('timer', deadline);
+
+	// Modal
+		
+	function activateModeWind(btn) {
+		let overlay = document.querySelector('.overlay'),
+			btnCloseModWind = document.querySelector('.popup-close');
+
+		btn.addEventListener('click', function() {
+			this.classList.add('more-splash');
+			overlay.style.display = 'block';
+			document.body.style.overflow = 'hidden';
+		});
+	
+		btnCloseModWind.addEventListener('click', function() {
+			btn.classList.remove('more-splash');
+			overlay.style.display = 'none';
+			document.body.style.overflow = '';
+		});
+	}
+
+	let btnModWind = document.querySelector('.more'),
+		btnDescription = document.querySelectorAll('.description-btn');
+
+	activateModeWind(btnModWind);
+
+	btnDescription.forEach(function(event) {
+		activateModeWind(event);
+	});
+
 });
