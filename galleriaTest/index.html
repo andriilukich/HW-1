@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>galleria</title>
+    <style>
+        /* .galleria{ width: 700px; height: 400px; background: #000 } */
+    </style>
+</head>
+<body>
+    <div class="galleria">
+        <img src="photo1.jpg">
+        <img src="photo2.jpg">
+        <img src="photo3.jpg">
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="galleria/dist/galleria.min.js"></script>
+    <script>
+        (function() {
+            Galleria.loadTheme('galleria/dist/themes/classic/galleria.classic.min.js');
+            Galleria.configure({
+                transition: 'slide',
+                imageCrop: true,
+                height: 700,
+                width: 1100,
+                autoplay: 3000,
+                lightbox: true
+            });
+            Galleria.run('.galleria');
+        }());
+    </script>
+</body>
+</html>
