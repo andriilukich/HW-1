@@ -12,6 +12,9 @@
 # practice
 /Practice
 
+# bootstarap
+bootstrap-grid.min.css
+
 # misc
 .DS_Store
 .env.local
